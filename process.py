@@ -8,7 +8,7 @@ import tensorflow as tf
 import math
 
 import tensorflow as tf
-#from inception_resnet import AgriculturalDisease
+
 
 slim = tf.contrib.slim
 
@@ -138,65 +138,6 @@ def image_to_tfexample_test(image_data, image_format, image_id):
     }))
 
 
-def convert_dataset(split_name, filenames, class_names_to_ids, dataset_dir):
-    assert split_name in ['train', 'validation']
-
-    num_per_shard = int(math.ceil(len(filenames) / float(_NUM_SHARDS)))
-    with tf.Graph().as_default():
-        image_reader = ImageReader()
-
-        with tf.Session('') as sess:
-
-            for shard_id in range(_NUM_SHARDS):
-                output_filename = get_dataset_filename(
-                    dataset_dir, split_name, shard_id)
-
-                with tf.python_io.TFRecordWriter(output_filename) as tfrecord_writer:
-                    start_ndx = shard_id * num_per_shard
-                    end_ndx = min((shard_id + 1) * num_per_shard, len(filenames))
-                    for i in range(start_ndx, end_ndx):
-                        sys.stdout.write('\r>> Converting image %d/%d shard %d' % (
-                            i + 1, len(filenames), shard_id))
-                        sys.stdout.flush()
-
-                        # Read the filename:
-                        image_data = tf.gfile.FastGFile(filenames[i], 'rb').read()
-                        height, width = image_reader.read_image_dims(sess, image_data)
-                        #image = tf.image.decode_jpeg(image)
-                        one_dir = os.path.dirname(filenames[i])
-
-                        one_class_name = os.path.basename(one_dir)
-                        if one_class_name in ['一般', '严重']:
-                            two_dir = os.path.dirname(one_dir)
-                            two_class_name = os.path.basename(two_dir)
-                            class_name = (two_class_name + one_class_name).replace(' ', '')
-                        else:
-                            class_name = one_class_name.replace(' ','')
-                        print(class_name)
-                        class_id = class_names_to_ids[class_name]
-
-
-                        example = image_to_tfexample(
-                            image_data, b'jpg', height, width, class_id)
-                        tfrecord_writer.write(example.SerializeToString())
-
-    sys.stdout.write('\n')
-    sys.stdout.flush()
-
-
-def write_label_file(labels_to_class_names, dataset_dir,
-                     filename='labels.txt'):
-  """Writes a file with the list of class names.
-  Args:
-    labels_to_class_names: A map of (integer) labels to class names.
-    dataset_dir: The directory in which the labels file should be written.
-    filename: The filename where the class names are written.
-  """
-  labels_filename = os.path.join(dataset_dir, filename)
-  with tf.gfile.Open(labels_filename, 'w') as f:
-    for label in labels_to_class_names:
-      class_name = labels_to_class_names[label]
-      f.write('%d:%s\n' % (label, class_name))
 
 def json_convert_dataset(jsonpath, split_name, dataset_dir, image_path):
     assert split_name in ['train', 'validation']
@@ -275,31 +216,10 @@ def json_convert_dataset_test(split_name, dataset_dir, image_path):
 
 	
 if __name__ == '__main__':
-    #json_convert_dataset('./AgriculturalDisease_trainingset/AgriculturalDisease_train_annotations.json', 'train', 'tf_data', './AgriculturalDisease_trainingset/images')
 
-    #json_convert_dataset('./AgriculturalDisease_validationset/AgriculturalDisease_validation_annotations.json', 'validation', 'tf_data', './AgriculturalDisease_validationset/images')
-    json_convert_dataset_test('test', 'tf_data', './AgriculturalDisease_testA/images')
-
-'''
-    photo_filenames, class_names = get_filenames_and_classes('E:\datasets')
-    #print(photo_filenames)
-    print(class_names)
-    random.seed(_RANDOM_SEED)
-    random.shuffle(photo_filenames)
-    class_names_to_ids = dict(zip(class_names, range(len(class_names))))
-    print(len(class_names_to_ids))
-    print(class_names_to_ids)
-    convert_dataset('validation', photo_filenames, class_names_to_ids, './tf_data')
-    # Finally, write the labels file:
-    #labels_to_class_names = dict(zip(range(len(class_names)), class_names))
-    #write_label_file(labels_to_class_names, './tf_data')
-
-    # Selects the 'validation' dataset.
-    DATA_DIR = './tf_data'
-    dataset = AgriculturalDisease.get_split('validation', DATA_DIR)
-
-    # Creates a TF-Slim DataProvider which reads the dataset in the background
-    # during both training and testing.
-    provider = slim.dataset_data_provider.DatasetDataProvider(dataset)
-    [image, label] = provider.get(['image', 'label'])
-    '''
+    #有标签的训练数据
+    json_convert_dataset('./AgriculturalDisease_trainingset/AgriculturalDisease_train_annotations.json', 'train', 'tf_data', './AgriculturalDisease_trainingset/images')
+    #有标签的验证数据
+    json_convert_dataset('./AgriculturalDisease_validationset/AgriculturalDisease_validation_annotations.json', 'validation', 'tf_data', './AgriculturalDisease_validationset/images')
+    #无标签的测试数据(比赛提交使用)
+    #json_convert_dataset_test('test', 'tf_data', './AgriculturalDisease_testA/images')
