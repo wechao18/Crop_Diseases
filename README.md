@@ -51,7 +51,24 @@ sh train.sh
 ### 测试模型
 
 ```
+# 配置test.sh参数
+# 测试数据位置
+DATASET_DIR=/media/zh/DATA/AgriculturalDisease20181023/tf_data
+# 训练后产生的模型
+CHECKPOINT_PATH=/media/zh/DATA/AgriculturalDisease20181023/check_save/vgg16_finetune/model.ckpt-40000
 
+
+python test.py \
+    --alsologtostderr \
+    --checkpoint_path=${CHECKPOINT_FILE} \
+    --dataset_dir=${DATASET_DIR} \
+    --dataset_name=AgriculturalDisease \
+    --dataset_split_name=validation \
+    --model_name=resnet_v1_101 \
+    --checkpoint_path=${CHECKPOINT_PATH}
 ```
 
 ### 特征图可视化
+```
+python demo.py
+```
