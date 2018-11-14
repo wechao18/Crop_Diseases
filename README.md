@@ -13,11 +13,12 @@ python process.py
 `
 ### 训练模型
 
-`
-cd slim
+`cd slim`
 
-sdsdds
-`
+配置train.sh参数
+
+`sh train.sh`
+
 
 ### 测试模型
 
