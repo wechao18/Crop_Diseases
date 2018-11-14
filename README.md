@@ -1,18 +1,23 @@
 ## Crop_Diseases
 Crop Diseases Detection
+
 代码源于Google识别API，根据数据情况做了少许修改。
 
-[数据集下载](....)
-[预训练模型下载](https://github.com/tensorflow/models/tree/master/research/slim#pre-trained-models)
+深度学习框架Tensorflow1.9
 
+[数据集下载](....)
+
+[预训练模型下载](https://github.com/tensorflow/models/tree/master/research/slim#pre-trained-models)
 
 ### 生成TFrecords
 
 运行 process.py 将数据图像压缩生成TFRecords类型的数据文件，可以提高数据读取效率
 
-`
+```
+#修改process.py 主函数路径，改为自己的下载后压缩的路径
+
 python process.py
-`
+```
 ### 训练模型
 ```
 #进入slim目录
@@ -34,7 +39,7 @@ python train_image_classifier1.py \
     --model_name=resnet_v1_101 \              #模型名称
     --checkpoint_path=${CHECKPOINT_PATH} \    #预训练模型位置，如果完全初始化训练则不需要这条
     --learning_rate=0.002 \                   #学习率
-    --checkpoint_exclude_scopes=vgg_16/fc8    #使用预训练训练 排除掉最后的分类层（因为和你的数据分类不一样）
+    --checkpoint_exclude_scopes=resnet_v1_101/logits \    #使用预训练训练 排除掉最后的分类层（因为和你的数据分类不一样）
     --max_number_of_steps=40000 \             #迭代次数
 
 
