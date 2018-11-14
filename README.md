@@ -17,6 +17,12 @@ python process.py
 
 配置train.sh参数
 
+```
+sdsds
+
+dsds
+```
+
 `sh train.sh`
 
 
