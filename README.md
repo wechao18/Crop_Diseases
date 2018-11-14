@@ -15,8 +15,6 @@ python process.py
 
 `
 cd slim
-
-sh test.sh
 `
 
 # 测试模型
