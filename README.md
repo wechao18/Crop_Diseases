@@ -14,7 +14,7 @@ python process.py
 # 训练模型
 
 `
-cd slim #进入slim目录
+cd slim
 
 sh test.sh
 `
