@@ -11,14 +11,14 @@ Crop Diseases Detection
 `
 python process.py
 `
-
-如果需要测试,执行测试脚本文件
+# 训练模型
 
 `
-
-#进入slim目录
-
-cd slim
-
+cd slim #进入slim目录
 sh test.sh
 `
+
+# 测试模型
+
+
+# 特征图可视化
