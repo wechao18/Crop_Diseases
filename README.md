@@ -15,6 +15,7 @@ python process.py
 
 `
 cd slim #进入slim目录
+
 sh test.sh
 `
 
