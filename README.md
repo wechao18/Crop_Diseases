@@ -15,6 +15,9 @@ python process.py
 如果需要测试,执行测试脚本文件
 
 `
+#进入slim目录
+
 cd slim
+
 sh test.sh
 `
