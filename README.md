@@ -5,7 +5,7 @@ Crop Diseases Detection
 
 深度学习框架Tensorflow1.9
 
-[数据集下载](....)
+[数据集下载 百度网盘 密码：yq30](https://pan.baidu.com/s/1ey3ioopiJZu1-SV-neH2Ng)
 
 [预训练模型下载](https://github.com/tensorflow/models/tree/master/research/slim#pre-trained-models)
 
@@ -68,5 +68,10 @@ python test.py \
 
 ### 特征图可视化
 ```
-python demo.py
+# 同样修改好自己的路径，取得是vgg_16网络提取中间层得特征，所以需要训练一个vgg16的网络
+# 如果想使用其他网络，需要自己定义一个类似于vgg_16_layer的网络，原始网络没有返回中间层的信息
+sh demo.sh
 ```
+
+### 曲线生成
+

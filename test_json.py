@@ -106,7 +106,7 @@ def main(_):
         ######################
         # Select the dataset #
         ######################
-        dataset = AgriculturalDisease.get_split_test('test', '/media/zh/DATA/AgriculturalDisease20181023/tf_data')
+        dataset = AgriculturalDisease.get_split_test(FLAGS.dataset_split_name, FLAGS.dataset_dir)
 
         provider = slim.dataset_data_provider.DatasetDataProvider(
             dataset,
@@ -136,22 +136,19 @@ def main(_):
             capacity=5 * 100,
             allow_smaller_final_batch=True)
 
-        #arg_scope = inception.inception_resnet_v2_arg_scope()
-        #with slim.arg_scope(arg_scope):
         logits, end_points = network_fn(images)
 
-        #checkpoint_file = '/media/zh/DATA/AgriculturalDisease/train_logs1/model.ckpt-40000'
+        
         saver = tf.train.Saver()
         saver.restore(sess, FLAGS.checkpoint_path)
 
         predictions = tf.argmax(logits, 1)
-        #labels = tf.squeeze(labels)
+        
 
         num_batches = math.ceil(dataset.num_samples / float(100))
         tf.logging.info(
             'num_sample %d batch_size %d num_baatches %d' % (dataset.num_samples, 100, num_batches))
         probabilities = tf.nn.softmax(logits)
-        #sess.run(tf.global_variables_initializer())
         tf.local_variables_initializer().run()
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess, coord=coord)

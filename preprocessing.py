@@ -107,7 +107,7 @@ def main(_):
         # Select the dataset #
         ######################
         dataset = dataset_factory.get_dataset(
-            'AgriculturalDisease', 'train', '/media/zh/DATA/AgriculturalDisease20181023/tf_data')
+            FLAGS.dataset_name, FLAGS.dataset_split_name, FLAGS.dataset_dir)
 
         provider = slim.dataset_data_provider.DatasetDataProvider(
             dataset,

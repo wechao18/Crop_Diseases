@@ -15,19 +15,9 @@ from nets import nets_factory
 
 
 
-def read_tf_record():
-    return 1
-#»ñÈ¡inception_resnet_v2Ä¬ÈÏÍ¼Æ¬³ß´ç£¬ÕâÀïÎª299
-image_size = inception.inception_resnet_v2.default_image_size
-#»ñÈ¡imagenetËùÓÐ·ÖÀàµÄÃû×Ö£¬ÕâÀïÓÐ1000¸ö·ÖÀà
-#names = imagenet.create_readable_names_for_imagenet_labels()
-
 slim = tf.contrib.slim
 
 
-#batch_size = 1
-#image_test = tf.placeholder(tf.float32, [batch_size, 299, 299, 3])
-#label_test = tf.placeholder(tf.int32, [batch_size])
 
 tf.app.flags.DEFINE_integer(
     'batch_size', 100, 'The number of samples in each batch.')
@@ -111,7 +101,7 @@ def main(_):
         # Select the dataset #
         ######################
         dataset = dataset_factory.get_dataset(
-            'AgriculturalDisease', 'validation', '/media/zh/DATA/AgriculturalDisease20181023/tf_data')
+            FLAGS.dataset_name, FLAGS.dataset_split_name, FLAGS.dataset_dir)
 
         provider = slim.dataset_data_provider.DatasetDataProvider(
             dataset,
@@ -140,11 +130,10 @@ def main(_):
             capacity=5 * 100,
             allow_smaller_final_batch=True)
 
-        #arg_scope = inception.inception_resnet_v2_arg_scope()
-        #with slim.arg_scope(arg_scope):
+
         logits, end_points = network_fn(images)
 
-        #checkpoint_file = '/media/zh/DATA/AgriculturalDisease/train_logs/model.ckpt-14552'
+
         saver = tf.train.Saver()
         saver.restore(sess, FLAGS.checkpoint_path)
 
@@ -158,7 +147,7 @@ def main(_):
         with tf.name_scope('eval'):
             eval1 = tf.nn.in_top_k(probabilities, labels, k=1)
             eval5 = tf.nn.in_top_k(probabilities, labels, k=5)
-        #sess.run(tf.global_variables_initializer())
+
         tf.local_variables_initializer().run()
         coord = tf.train.Coordinator()
         threads = tf.train.start_queue_runners(sess, coord=coord)
