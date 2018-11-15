@@ -20,8 +20,6 @@ python process.py
 ```
 ### 训练模型
 ```
-#进入slim目录
-cd slim
 
 # 配置train.sh参数
 #生成的TFrecords路劲(根据自己的实际修改，下同)
