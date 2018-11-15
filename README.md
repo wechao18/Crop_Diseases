@@ -36,7 +36,7 @@ python train_image_classifier1.py \
     --dataset_dir=${DATASET_DIR} \
     --model_name=resnet_v1_101 \              #模型名称
     --checkpoint_path=${CHECKPOINT_PATH} \    #预训练模型位置，如果完全初始化训练则不需要这条
-    --learning_rate=0.002 \                   #学习率
+    --learning_rate=0.001 \                   #学习率
     --checkpoint_exclude_scopes=resnet_v1_101/logits \    #使用预训练训练 排除掉最后的分类层（因为和你的数据分类不一样）
     --max_number_of_steps=40000 \             #迭代次数
 
@@ -62,7 +62,7 @@ python test.py \
     --dataset_dir=${DATASET_DIR} \
     --dataset_name=AgriculturalDisease \
     --dataset_split_name=validation \
-    --model_name=resnet_v1_101 \
+    --model_name=vgg_16 \
     --checkpoint_path=${CHECKPOINT_PATH}
 ```
 
@@ -79,6 +79,5 @@ sh demo.sh
 ```
 # 可以将图表的数据下载，利用matlab或者python自行绘图
 tensorboard --logdir='xxxx'
-
 ```
 
